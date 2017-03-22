@@ -1,6 +1,7 @@
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//eng.churchinhongkong.org//NONSGML bible_reading.pl v1.0//EN
+X-WR-CALNAME:Old Testament
 BEGIN:VEVENT
 UID:20010101T130000Z@eng.churchinhongkong.org
 DTSTAMP:20170322T235959Z

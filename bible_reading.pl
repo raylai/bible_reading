@@ -13,8 +13,22 @@ print "BEGIN:VCALENDAR\r\n";
 print "VERSION:2.0\r\n";
 print "PRODID:-//eng.churchinhongkong.org//NONSGML bible_reading.pl v1.0//EN\r\n";
 
+my $calname;
+
 while (my $l = <>) {
 	chomp $l;
+
+	# Read the first line to detect New/Old Testament.
+	if (!defined($calname)) {
+		if ($l =~ /^Mat/) {
+			$calname = "New Testament";
+		} elsif ($l =~ /^Gen/) {
+			$calname = "Old Testament";
+		} else {
+			$calname = 0;
+		}
+		print "X-WR-CALNAME:$calname\r\n" if $calname;
+	}
 
 	my $ymd = POSIX::strftime "%Y%m%d", gmtime($date);
 	print "BEGIN:VEVENT\r\n";
