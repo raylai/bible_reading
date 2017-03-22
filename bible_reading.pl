@@ -18,11 +18,11 @@ my $calname;
 while (my $l = <>) {
 	chomp $l;
 
-	# Read the first line to detect New/Old Testament.
+	# Read the first character to detect New/Old Testament.
 	if (!defined($calname)) {
-		if ($l =~ /^Mat/) {
+		if ($l =~ /^M/) {
 			$calname = "New Testament";
-		} elsif ($l =~ /^Gen/) {
+		} elsif ($l =~ /^G/) {
 			$calname = "Old Testament";
 		} else {
 			$calname = 0;
