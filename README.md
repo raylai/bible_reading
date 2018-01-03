@@ -1,12 +1,12 @@
-Bible Reading Schedule Generator
+Bible Schedule Generator
 
-Usage:
-% bible_reading.pl bible_reading_ot.txt > bible_reading_ot.ics
-% bible_reading.pl bible_reading_nt.txt > bible_reading_nt.ics
+run `make`
 
 Put the resulting .ics files onto a web server and subscribe to it.
 
-Come, for all things are now ready. (Luke 14:17)
+"Man shall not live on bread alone,
+but on every word that proceeds out through the mouth of God."
+(Matthew 4:4)
 
 TODO
 - Generate real UID
