@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from icalendar import Calendar, Event
 from logging import warn
+from uuid import uuid4
 
 import sys
 
@@ -16,31 +17,35 @@ plan2: read all stdin into memory, count # of lines, output if input is correct
 downfall: won't start moving until everything inputted
 but who cares, compilers work the same way.
 plan3: read first line to infer calendar name
+Unknown 2: how to generate all-day events
+plan4: switch from datetime to date
+Unknown 3: how to generate current timestamp for DTSTAMP
+plan5: use datetime.datetime.utcnow()
 """
 
+ts = datetime.utcnow()
+
+cal = Calendar()
+cal.add('prodid', '-//Bible Schedule//bible_schedule.py v2.0//EN')
+
+dates = [date(2018,1,1)+timedelta(days=n) for n in range(365)]
 summaries = sys.stdin.readlines()
 if len(summaries) != 365:
     warn('%d days in a year' % len(summaries))
 
 # Guess which testament we're reading.
-if summaries[0][0] == 'G':
-    calname = 'Old Testament'
-elif summaries[0][0] == 'M':
-    calname = 'New Testament'
-else:
-    calname = None
-
-cal = Calendar()
-cal.add('prodid', '-//Bible Schedule//bible_schedule.py v2.0//EN')
+calname = ('Old Testament' if summaries[0][0] == 'G' else
+    'New Testament' if summaries[0][0] == 'M' else
+    None)
 if calname: cal.add('x-wr-calname', calname)
 
-date = datetime(2018,1,1)
-for summary in summaries:
+for d, s in zip(dates, summaries):
     event = Event()
-    event.add('summary', summary.strip())
-    event.add('dtstart', date)
-    event.add('dtstamp', date)
+    event.add('summary', s.strip())
+    event.add('dtstart', d)
+    event.add('dtstamp', ts)
     event.add('rrule', {'freq': 'yearly'})
+    event.add('transp', 'TRANSPARENT')
+    event.add('uid', uuid4())
     cal.add_component(event)
-    date += timedelta(days=1)
 print(cal.to_ical().decode('utf-8'), end='')
